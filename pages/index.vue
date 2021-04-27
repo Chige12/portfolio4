@@ -1,7 +1,6 @@
 <template lang="pug">
   .container
     div
-      Logo
       h1.title portfolio4
       .links
         a(
@@ -35,8 +34,7 @@ export default Vue.extend({})
 }
 
 .title {
-  font-family: 'Quicksand', 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
-    'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-family: 'Noto Sans JP', sans-serif;
   display: block;
   font-weight: 300;
   font-size: 100px;
