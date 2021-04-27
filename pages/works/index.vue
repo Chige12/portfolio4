@@ -7,9 +7,12 @@
         :id="work"
       )
         .worklist-one(
-          :style="`transform: translate(0px, 0px);`"
-          :class="{'sticky-top': 0 > elementPosition(work),'sticky-bottom': viewHeight-200 < elementPosition(work)}"
-          ) {{work}} {{elementPosition(work)}}
+          :style="`transform: perspective(600px) translate3d(${rotateXYZ(work)}); height: ${heightShoter(work)}px; opacity: ${fadeInOut(work)};`"
+          :class="{'sticky-top': topPadding > elementPosition(work),'sticky-bottom': viewHeight - bottomPadding - smallBoxH < elementPosition(work)}"
+          ) 
+          .container
+            .culumns-2
+              .culumn {{work}} {{elementPosition(work)}}
 </template>
 <script lang="ts">
 import Vue from 'vue'
@@ -18,6 +21,10 @@ export default Vue.extend({
     return {
       position: 0,
       viewHeight: 0,
+      topPadding: 24,
+      bottomPadding: 24,
+      bigBoxH: 240,
+      smallBoxH: 60,
       worklist: [
         'hoge',
         'foo',
@@ -32,30 +39,77 @@ export default Vue.extend({
     }
   },
   mounted() {
-    document.onscroll = (e) => {
+    document.onscroll = () => {
       this.position =
         document.documentElement.scrollTop || document.body.scrollTop
     }
-    this.viewHeight = window.innerHeight
+    this.handleResize()
+    window.addEventListener('resize', this.handleResize)
+  },
+  beforeDestroy() {
+    window.removeEventListener('resize', this.handleResize)
   },
   methods: {
-    stopScroll(key: string) {
+    handleResize() {
+      this.viewHeight = window.innerHeight
+    },
+    heightShoter(key: string) {
       const elemPosi = this.elementPosition(key)
-      if (elemPosi) {
-        return elemPosi < 0 ? -elemPosi : 0
+      const topHeight = this.cutMinMax(
+        this.smallBoxH,
+        this.bigBoxH,
+        elemPosi + this.bigBoxH - this.topPadding
+      )
+      const bottomHeight = this.cutMinMax(
+        this.smallBoxH,
+        this.bigBoxH,
+        -elemPosi + (this.viewHeight - this.bottomPadding)
+      )
+      return Math.min(topHeight, bottomHeight)
+    },
+    fadeInOut(key: string) {
+      const elemPosi = this.elementPosition(key)
+      const fadeIn = this.normalization(
+        -this.bigBoxH,
+        -(this.bigBoxH - this.smallBoxH - this.topPadding),
+        elemPosi
+      )
+      const fadeOut = this.normalization(
+        -(this.bigBoxH - this.smallBoxH) - this.smallBoxH,
+        -(this.bigBoxH - this.smallBoxH - this.bottomPadding),
+        -elemPosi + this.viewHeight - this.bigBoxH
+      )
+      return this.cutMinMax(0, 1, Math.min(fadeIn, fadeOut))
+    },
+    rotateXYZ(key: string) {
+      const elemPosi = this.elementPosition(key)
+      const fade = this.fadeInOut(key)
+      const theta = (1 - fade) * Math.PI
+      const Y = Math.sin(theta) * 20
+      const Z = Math.cos(theta) * 20 - 20 // top
+      if (elemPosi < 0) {
+        return `0px, ${-Y}px, ${Z}px`
+      } else {
+        return `0px, ${Y}px, ${Z}px`
       }
-      return 0
     },
     elementPosition(key: string) {
       const elem: HTMLElement | null = document.getElementById(key)
       if (elem) {
-        const elemPosi = elem.getBoundingClientRect().top - 36
-        return elemPosi
+        return elem.getBoundingClientRect().top
       }
       return 0
     },
+    cutMinMax(min: number, max: number, data: number) {
+      if (data > max) {
+        return max
+      } else if (data < min) {
+        return min
+      } else {
+        return data
+      }
+    },
     normalization(min: number, max: number, data: number) {
-      // 0~-200を正規化
       return (data - min) / (max - min)
     },
   },
@@ -63,7 +117,7 @@ export default Vue.extend({
 </script>
 <style lang="scss" scoped>
 .works {
-  padding-top: 20px;
+  padding-top: 80px;
 }
 .worklist {
   list-style: none;
@@ -71,29 +125,32 @@ export default Vue.extend({
 }
 .worklist-one-wrapper {
   position: relative;
-  height: 200px;
-  margin: 16px;
+  width: 100%;
+  height: 240px;
+  margin-bottom: 32px;
 }
 .worklist-one {
   position: relative;
-  height: 200px;
+  width: 100%;
+  height: 240px;
   background: lightgray;
-  transition: 0.1s ease-out;
-  opacity: 0.7;
+  overflow: hidden;
+  z-index: 1;
+  &.sticky-top {
+    position: fixed;
+    top: 24px; // same topPadding
+    left: 0;
+    z-index: 0;
+  }
+  &.sticky-bottom {
+    position: fixed;
+    bottom: 24px; // same bottomPadding
+    left: 0;
+    z-index: 0;
+  }
 }
+
 .parameter {
   position: fixed;
-}
-.sticky-top {
-  position: fixed;
-  top: 0;
-  left: 0;
-  background: red;
-}
-.sticky-bottom {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  background: blue;
 }
 </style>

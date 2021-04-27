@@ -20,7 +20,7 @@ export default {
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
-  css: [],
+  css: ['ress'],
 
   // ランタイム lint: https://typescript.nuxtjs.org/ja/guide/lint
   typescript: {
