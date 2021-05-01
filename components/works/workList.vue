@@ -1,20 +1,26 @@
 <template lang="pug">
   ul.worklist
     li.worklist-one-wrapper(
-      v-for="work in worklist" :key="`worklist-${work}`"
-      :id="work"
+      v-for="(post,postKey) in posts" :key="`worklist-${post}`"
+      :id="`work-list-${postKey}`"
     )
       .worklist-one(
-        :style="`transform: perspective(600px) translate3d(${rotateXYZ(work)}); height: ${heightShoter(work)}px; opacity: ${fadeInOut(work)};`"
-        :class="{'sticky-top': topPadding > elementPosition(work),'sticky-bottom': viewHeight - bottomPadding - smallBoxH < elementPosition(work)}"
-        ) 
+        :style="`transform: perspective(600px) translate3d(${rotateXYZ(`work-list-${postKey}`)}); height: ${heightShoter(`work-list-${postKey}`)}px; opacity: ${fadeInOut(`work-list-${postKey}`)};`"
+        :class="{'sticky-top': topPadding > elementPosition(`work-list-${postKey}`),'sticky-bottom': viewHeight - bottomPadding - smallBoxH < elementPosition(`work-list-${postKey}`)}"
+        )
         .container
           .culumns-2
-            .culumn {{work}} {{elementPosition(work)}}
+            .culumn {{post.fields.title}}
 </template>
 <script lang="ts">
 import Vue from 'vue'
 export default Vue.extend({
+  props: {
+    posts: {
+      type: Array,
+      default: () => [],
+    },
+  },
   data() {
     return {
       position: 0,
@@ -37,6 +43,7 @@ export default Vue.extend({
     }
   },
   mounted() {
+    console.log(this.posts)
     window.addEventListener('scroll', this.scrollEvent)
     this.handleResize()
     window.addEventListener('resize', this.handleResize)
@@ -126,6 +133,10 @@ export default Vue.extend({
   width: 100%;
   height: 240px;
   margin-bottom: 32px;
+}
+.img {
+  width: 100%;
+  height: 100%;
 }
 .worklist-one {
   position: relative;
