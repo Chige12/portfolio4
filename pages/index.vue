@@ -2,6 +2,7 @@
   .container
     div
       h1.title portfolio4
+      nuxt-link(to="./works") works
       .links
         a(
           href="https://nuxtjs.org/"

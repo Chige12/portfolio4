@@ -52,6 +52,9 @@ $bezier-ease-out: cubic-bezier(0.06, 0.67, 0.02, 1);
   opacity: 0;
 }
 
+$culumnHeightMax: 240px;
+$culumnHeightMin: 60px;
+
 // .page-enter {
 //   transform: translateX(100%);
 // }
