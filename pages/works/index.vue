@@ -1,6 +1,6 @@
 <template lang="pug">
   .works#works
-    WorkList(:posts="posts")
+    WorkList(:columnPosts="columnPosts")
 </template>
 <script lang="ts">
 import Vue from 'vue'
@@ -19,6 +19,36 @@ export default Vue.extend({
     return {
       posts: entries.items,
     }
+  },
+  data() {
+    return {
+      posts: [],
+    }
+  },
+  computed: {
+    columnPosts() {
+      const posts: Array<any> = this.posts
+      const columnPosts: Array<any> = this.getColumnArray(posts, 2)
+      return columnPosts
+    },
+  },
+  methods: {
+    getColumnArray(array: Array<any>, columnNum: number) {
+      // [1,2,3,4] => [[1,2], [3,4]]
+      const newArr = []
+      for (let row = 0; row < Math.ceil(array.length / columnNum); row++) {
+        const newRow = []
+        for (let column = 0; column < columnNum; column++) {
+          if (array[row * columnNum + column]) {
+            newRow.push(array[row * columnNum + column])
+          } else {
+            newRow.push(null)
+          }
+        }
+        newArr.push(newRow)
+      }
+      return newArr
+    },
   },
 })
 </script>

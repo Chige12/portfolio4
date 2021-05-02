@@ -1,28 +1,30 @@
 <template lang="pug">
-  ul.worklist
-    li.worklist-one-wrapper(
-      v-for="(columnPost,postsRow) in columnPosts" :key="`work-row-${postsRow}`"
-      :id="`work-row-${postsRow+1}`"
-    )
-      workListColumn(
-        :postsRow="postsRow"
-        :columnPost="columnPost"
-        :position="position"
-        :viewHeight="viewHeight"
+  .work-one
+    workListColumn(
+      :postsRow="0"
+      :columnPost="new Array(post)"
+      :position="position"
+      :viewHeight="viewHeight"
       )
 </template>
 <script lang="ts">
 import Vue from 'vue'
 import workListColumn from '~/components/works/workListColumn.vue'
+
+import client from '~/plugins/contentful.js'
 export default Vue.extend({
   components: {
     workListColumn,
   },
-  props: {
-    columnPosts: {
-      type: Array,
-      default: () => [],
-    },
+  async asyncData({ params }) {
+    // 記事一覧を取得
+    const entries = await client.getEntries({
+      content_type: 'works',
+      'fields.slug': params.slug,
+    })
+    return {
+      post: entries.items[0],
+    }
   },
   data() {
     return {
@@ -51,14 +53,8 @@ export default Vue.extend({
 })
 </script>
 <style lang="scss" scoped>
-.worklist {
-  list-style: none;
-  padding-bottom: 1000px;
-}
-.worklist-one-wrapper {
-  position: relative;
-  width: 100%;
-  height: $culumnHeightMax;
-  margin-bottom: 40px;
+.works {
+  padding-top: 80px;
+  height: 100%;
 }
 </style>

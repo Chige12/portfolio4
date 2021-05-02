@@ -1,24 +1,32 @@
 <template lang="pug">
-  nuxt-link.worklist-one(
-    :to="`./works/${post.fields.slug}`"
-    :style="`transform: perspective(600px) translate3d(${rotateXYZ}); height: ${heightShoter}px; opacity: ${getFadeInOut};`"
-    :id="`work-list-${post.fields.slug}`"
-    :class="{'sticky-top': -topPadding < getPosition-absYpx,'sticky-bottom': -(getViewHeight - bottomPadding - smallBoxH) > getPosition-absYpx}"
+  .worklist-one(
+    :style="`transform: perspective(500px) translate3d(${rotateXYZ}); height: ${heightShoter}px; opacity: ${getFadeInOut};`"
+    :class="{'sticky-top': -topPadding < getPosition - absYpx,'sticky-bottom': -(getViewHeight - bottomPadding - smallBoxH) > getPosition - absYpx}"
     )
     .container
       .culumns-2
-        .culumn
-          .top-image(:style="`background-image: url(${post.fields.topImage.fields.file.url});`" :alt="post.fields.topImage.fields.title")
-          .over-box
-            .title {{post.fields.title}}
+        .culumn(
+          v-for="post in columnPost"
+          v-if="post"
+          :key="`work-list-${post.fields.slug}`"
+          )
+          nuxt-link.works-card(:to="`/works/${post.fields.slug}`")
+            .top-image(:style="`background-image: url(${post.fields.topImage.fields.file.url});`" :alt="post.fields.topImage.fields.title")
+            .over-box
+              .title {{post.fields.title}}
+        .culumn.culumn--empty(v-else)
 </template>
 <script lang="ts">
 import Vue from 'vue'
 export default Vue.extend({
   props: {
-    post: {
-      type: Object,
-      default: () => {},
+    postsRow: {
+      type: Number,
+      default: 0,
+    },
+    columnPost: {
+      type: Array,
+      default: () => [],
     },
     position: {
       type: Number,
@@ -84,10 +92,10 @@ export default Vue.extend({
     this.getViewHeight = this.viewHeight
     this.getPosition = this.position
     const elem: HTMLElement | null = document.getElementById(
-      `work-list-${this.post.fields.slug}`
+      `work-row-${this.postsRow + 1}`
     )
     if (elem) {
-      this.absYpx = elem.getBoundingClientRect().top + window.pageYOffset
+      this.absYpx = elem.offsetTop
     }
   },
   methods: {
@@ -120,13 +128,11 @@ export default Vue.extend({
 })
 </script>
 <style lang="scss" scoped>
-.img {
-  width: 100%;
-  height: 100%;
-}
 .worklist-one {
   position: absolute;
   width: 100%;
+  top: 0;
+  left: 0;
   height: $culumnHeightMax;
   z-index: 1;
   &.sticky-top {
@@ -150,19 +156,29 @@ export default Vue.extend({
 }
 .culumns-2 {
   height: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  padding: 0 40px;
 }
 .culumn {
   width: $culumnHeightMax * 1920 / 1080;
   height: 100%;
+}
+.works-card {
+  display: block;
+  width: 100%;
+  height: 100%;
   position: relative;
   border-radius: 22px;
   overflow: hidden;
-  box-shadow: 0 2px 10px rgba(black, 0.2);
+  box-shadow: 0 2px 10px rgba($theme-gray-d2, 0.3);
   .top-image {
     width: 100%;
     height: 100%;
     background-size: cover;
     background-position: center;
+    transition: 0.2s ease-out;
   }
   .over-box {
     position: absolute;
@@ -175,9 +191,14 @@ export default Vue.extend({
     align-items: center;
     color: white;
     border-radius: 14px;
-    background: rgba(black, 0.7);
-    backdrop-filter: blur(10px);
+    background: rgba(black, 0.6);
+    backdrop-filter: blur(4px);
     transform: translate(0, 0);
+  }
+  &:hover {
+    .top-image {
+      transform: scale(1.05);
+    }
   }
 }
 </style>
