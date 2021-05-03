@@ -191,8 +191,8 @@ export default Vue.extend({
     align-items: center;
     color: white;
     border-radius: 14px;
-    background: rgba(black, 0.6);
-    backdrop-filter: blur(4px);
+    background: rgba(black, 0.8);
+    // backdrop-filter: blur(4px);
     transform: translate(0, 0);
   }
   &:hover {
