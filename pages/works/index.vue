@@ -3,38 +3,54 @@
     WorkList(:columnPosts="columnPosts")
 </template>
 <script lang="ts">
-import Vue from 'vue'
+import {
+  defineComponent,
+  computed,
+  reactive,
+  useAsync,
+  watch,
+} from '@nuxtjs/composition-api'
+import client from '~/plugins/contentful.js'
+
 import WorkList from '~/components/works/workList.vue'
 
-import client from '~/plugins/contentful.js'
-export default Vue.extend({
+type State = {
+  posts: Array<any>
+}
+
+export default defineComponent({
   components: {
     WorkList,
   },
-  async asyncData() {
+  setup() {
     // 記事一覧を取得
-    const entries = await client.getEntries({
-      content_type: 'works',
+    const entries = useAsync(() =>
+      client.getEntries({
+        content_type: 'works',
+      })
+    )
+    // 記事一覧をstateに反映
+    watch(entries, (newPosts) => {
+      if (newPosts) {
+        state.posts = newPosts.items
+      }
     })
-    return {
-      posts: entries.items,
-    }
-  },
-  data() {
-    return {
+
+    const state = reactive<State>({
       posts: [],
-    }
-  },
-  computed: {
-    columnPosts() {
-      const posts: Array<any> = this.posts
-      const columnPosts: Array<any> = this.getColumnArray(posts, 2)
-      return columnPosts
-    },
-  },
-  methods: {
-    getColumnArray(array: Array<any>, columnNum: number) {
-      // [1,2,3,4] => [[1,2], [3,4]]
+    })
+
+    const columnPosts = computed(() => {
+      if (state.posts) {
+        // 2カラムにする
+        return getColumnArray(state.posts, 2)
+      } else {
+        return []
+      }
+    })
+
+    // カラム配列(多次元配列)にする ex.[1,2,3,4,5] => [[1,2], [3,4], [5, null]]
+    const getColumnArray = (array: Array<any>, columnNum: number) => {
       const newArr = []
       for (let row = 0; row < Math.ceil(array.length / columnNum); row++) {
         const newRow = []
@@ -42,13 +58,17 @@ export default Vue.extend({
           if (array[row * columnNum + column]) {
             newRow.push(array[row * columnNum + column])
           } else {
+            // 奇数の場合は横埋めのためにnull追加 => 空div生成
             newRow.push(null)
           }
         }
         newArr.push(newRow)
       }
       return newArr
-    },
+    }
+    return {
+      columnPosts,
+    }
   },
 })
 </script>

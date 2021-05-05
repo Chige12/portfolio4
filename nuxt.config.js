@@ -63,6 +63,8 @@ export default {
     '@nuxt/typescript-build',
     // https://go.nuxtjs.dev/stylelint
     '@nuxtjs/stylelint-module',
+    // https://composition-api.nuxtjs.org/getting-started/setup
+    '@nuxtjs/composition-api/module',
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
@@ -78,6 +80,11 @@ export default {
   },
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {},
+
+  generate: {
+    // choose to suit your project | Nuxt Composition API
+    interval: 2000,
+  },
 
   // Environment: https://qiita.com/taai/items/cbc61b9b4a18aacad57e
   publicRuntimeConfig: {

@@ -1,64 +1,95 @@
 <template lang="pug">
-  .work-one
-    header.top-image(:style="`background-image: url(${post.fields.topImage.fields.file.url});`" :alt="post.fields.topImage.fields.title")
+  .work-one(v-if="state.post.fields")
+    header.top-image(:style="`background-image: url(${state.post.fields.topImage.fields.file.url});`" :alt="state.post.fields.topImage.fields.title")
       .header-top
         nuxt-link(to="/works").back-link ◀︎ Back
       .header-bottom
         .container
-          h1.title {{post.fields.title}}
-          p {{post.fields.description}}
-          p {{post.fields.date}}
+          h1.title {{state.post.fields.title}}
+          p {{state.post.fields.description}}
+          p {{state.post.fields.date}}
     main
       .container
-        .article(v-html="toHtmlString(post.fields.article)")
-        ul.gallery-list(v-if="post.fields.gallery")
-          li.gallery-list-one(v-for="photo in post.fields.gallery" :key="`${photo.fields.title}`")
+        .article(v-html="toHtmlString(state.post.fields.article)")
+        ul.gallery-list(v-if="state.post.fields.gallery")
+          li.gallery-list-one(v-for="photo in state.post.fields.gallery" :key="`${photo.fields.title}`")
             img.gallery-photo(:src="photo.fields.file.url" :alt="photo.fields.title")
             p.gallery-title {{photo.fields.title}}
             p.gallery-description {{photo.fields.description}}
 </template>
 <script lang="ts">
-import Vue from 'vue'
+import {
+  defineComponent,
+  computed,
+  reactive,
+  onMounted,
+  onBeforeUnmount,
+  useAsync,
+  useRoute,
+  watch,
+} from '@nuxtjs/composition-api'
+
 import { documentToHtmlString } from '@contentful/rich-text-html-renderer'
 import client from '~/plugins/contentful.js'
-export default Vue.extend({
-  async asyncData({ params }) {
-    // 記事一覧を取得
-    const entries = await client.getEntries({
-      content_type: 'works',
-      'fields.slug': params.slug,
+
+type State = {
+  post: any
+  position: number
+  viewHeight: number
+}
+
+export default defineComponent({
+  setup() {
+    // 現在のslugを取得
+    const route = useRoute()
+    const slug = computed(() => route.value.params.slug)
+    // 記事を取得
+    const entries = useAsync(() =>
+      client.getEntries({
+        content_type: 'works',
+        'fields.slug': slug.value,
+      })
+    )
+    // 記事一覧をstateに反映
+    watch(entries, (newPosts: any) => {
+      if (newPosts) {
+        state.post = newPosts.items[0]
+      }
     })
-    console.log(entries.items[0])
-    return {
-      post: entries.items[0],
-    }
-  },
-  data() {
-    return {
+
+    const state = reactive<State>({
+      post: {},
       position: 0,
       viewHeight: 0,
-    }
-  },
-  mounted() {
-    window.addEventListener('scroll', this.scrollEvent)
-    this.handleResize()
-    window.addEventListener('resize', this.handleResize)
-  },
-  beforeDestroy() {
-    window.removeEventListener('scroll', this.scrollEvent)
-    window.removeEventListener('resize', this.handleResize)
-  },
-  methods: {
-    scrollEvent() {
-      this.position =
-        document.documentElement.scrollTop || document.body.scrollTop
-    },
-    handleResize() {
-      this.viewHeight = window.innerHeight
-    },
-    toHtmlString(obj: any) {
+    })
+
+    // Contentfullの記事をHTMLに変換
+    const toHtmlString = (obj: any) => {
       return documentToHtmlString(obj)
-    },
+    }
+
+    // スクロール量とwindowサイズを取得 今後使う予定
+    onMounted(() => {
+      handleResize()
+      window.addEventListener('scroll', scrollEvent)
+      window.addEventListener('resize', handleResize)
+    })
+    onBeforeUnmount(() => {
+      window.removeEventListener('scroll', scrollEvent)
+      window.removeEventListener('resize', handleResize)
+    })
+    const scrollEvent = () => {
+      state.position =
+        document.documentElement.scrollTop || document.body.scrollTop
+    }
+    const handleResize = () => {
+      state.viewHeight = window.innerHeight
+    }
+
+    return {
+      state,
+      toHtmlString,
+    }
   },
 })
 </script>

@@ -7,14 +7,29 @@
       workListColumn(
         :postsRow="postsRow"
         :columnPost="columnPost"
-        :position="position"
-        :viewHeight="viewHeight"
+        :position="state.position"
+        :viewHeight="state.viewHeight"
       )
 </template>
 <script lang="ts">
-import Vue from 'vue'
+import {
+  defineComponent,
+  reactive,
+  onMounted,
+  onBeforeUnmount,
+} from '@nuxtjs/composition-api'
+
 import workListColumn from '~/components/works/workListColumn.vue'
-export default Vue.extend({
+
+type Props = {
+  columnPosts: Array<any>
+}
+type State = {
+  position: number
+  viewHeight: number
+}
+
+export default defineComponent({
   components: {
     workListColumn,
   },
@@ -24,29 +39,34 @@ export default Vue.extend({
       default: () => [],
     },
   },
-  data() {
-    return {
+  setup(props: Props) {
+    const state = reactive<State>({
       position: 0,
       viewHeight: 0,
-    }
-  },
-  mounted() {
-    window.addEventListener('scroll', this.scrollEvent)
-    this.handleResize()
-    window.addEventListener('resize', this.handleResize)
-  },
-  beforeDestroy() {
-    window.removeEventListener('scroll', this.scrollEvent)
-    window.removeEventListener('resize', this.handleResize)
-  },
-  methods: {
-    scrollEvent() {
-      this.position =
+    })
+
+    // スクロール量とwindowサイズを取得
+    onMounted(() => {
+      handleResize()
+      window.addEventListener('scroll', scrollEvent)
+      window.addEventListener('resize', handleResize)
+    })
+    onBeforeUnmount(() => {
+      window.removeEventListener('scroll', scrollEvent)
+      window.removeEventListener('resize', handleResize)
+    })
+    const scrollEvent = () => {
+      state.position =
         document.documentElement.scrollTop || document.body.scrollTop
-    },
-    handleResize() {
-      this.viewHeight = window.innerHeight
-    },
+    }
+    const handleResize = () => {
+      state.viewHeight = window.innerHeight
+    }
+
+    return {
+      state,
+      props,
+    }
   },
 })
 </script>

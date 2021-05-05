@@ -1,7 +1,7 @@
 <template lang="pug">
   .worklist-one(
     :style="`transform: perspective(500px) translate3d(${rotateXYZ}); height: ${heightShoter}px; opacity: ${getFadeInOut};`"
-    :class="{'sticky-top': -topPadding < getPosition - absYpx,'sticky-bottom': -(getViewHeight - bottomPadding - smallBoxH) > getPosition - absYpx}"
+    :class="{'sticky-top': -state.topPadding < state.getPosition - state.absYpx,'sticky-bottom': -(state.getViewHeight - state.bottomPadding - state.smallBoxH) > state.getPosition - state.absYpx}"
     )
     .container
       .culumns-2
@@ -17,8 +17,33 @@
         .culumn.culumn--empty(v-else)
 </template>
 <script lang="ts">
-import Vue from 'vue'
-export default Vue.extend({
+import {
+  defineComponent,
+  computed,
+  reactive,
+  onMounted,
+  watch,
+} from '@nuxtjs/composition-api'
+
+type State = {
+  workListOneStyle: string
+  getPosition: number
+  getViewHeight: number
+  absYpx: number
+  topPadding: number
+  bottomPadding: number
+  bigBoxH: number
+  smallBoxH: number
+}
+
+type Props = {
+  postsRow: number
+  columnPost: Array<any>
+  position: number
+  viewHeight: number
+}
+
+export default defineComponent({
   props: {
     postsRow: {
       type: Number,
@@ -37,82 +62,91 @@ export default Vue.extend({
       default: 0,
     },
   },
-  data() {
-    return {
-      topPadding: 24,
-      bottomPadding: 24,
-      bigBoxH: 240,
-      smallBoxH: 60,
+  setup(props: Props) {
+    const state = reactive<State>({
       workListOneStyle: '',
       getPosition: 0,
       getViewHeight: 0,
       absYpx: 0,
-    }
-  },
-  computed: {
-    heightShoter(): number {
-      const topHeight = this.cutMinMax(
-        this.smallBoxH,
-        this.bigBoxH,
-        -(this.getPosition - this.absYpx) + this.bigBoxH - this.topPadding
+      topPadding: 24,
+      bottomPadding: 24,
+      bigBoxH: 240,
+      smallBoxH: 60,
+    })
+
+    // 消える前にスクロールに合わせてカードの高さを短くする
+    const heightShoter = computed((): number => {
+      const topHeight = cutMinMax(
+        state.smallBoxH,
+        state.bigBoxH,
+        -(state.getPosition - state.absYpx) + state.bigBoxH - state.topPadding
       )
-      const bottomHeight = this.cutMinMax(
-        this.smallBoxH,
-        this.bigBoxH,
-        this.getPosition -
-          this.absYpx +
-          (this.getViewHeight - this.bottomPadding)
+      const bottomHeight = cutMinMax(
+        state.smallBoxH,
+        state.bigBoxH,
+        state.getPosition -
+          state.absYpx +
+          (state.getViewHeight - state.bottomPadding)
       )
       return Math.min(topHeight, bottomHeight)
-    },
-    getFadeInOut(): number {
-      return this.fadeInOut()
-    },
-    rotateXYZ(): string {
-      const fade = this.fadeInOut()
+    })
+    // スクロールに合わせてopacityが0から1まで変化するよう調整
+    const getFadeInOut = computed((): number => {
+      return fadeInOut()
+    })
+    // スクロールに合わせて画面奥へ回転するように見えるXYZ座標を出力 => transformへ
+    const rotateXYZ = computed((): string => {
+      const fade = fadeInOut()
       const theta = (1 - fade) * Math.PI
       const Y = Math.sin(theta) * 20
       const Z = Math.cos(theta) * 20 - 20 // top
-      if (-this.getPosition + this.absYpx < 0) {
+      if (-state.getPosition + state.absYpx < 0) {
         return `0px, ${-Y}px, ${Z}px`
       } else {
         return `0px, ${Y}px, ${Z}px`
       }
-    },
-  },
-  watch: {
-    position(newValue) {
-      this.getPosition = newValue
-    },
-    viewHeight(newValue) {
-      this.getViewHeight = newValue
-    },
-  },
-  mounted() {
-    this.getViewHeight = this.viewHeight
-    this.getPosition = this.position
-    const elem: HTMLElement | null = document.getElementById(
-      `work-row-${this.postsRow + 1}`
+    })
+
+    watch(
+      () => props.position,
+      (newValue: number) => {
+        state.getPosition = newValue
+      }
     )
-    if (elem) {
-      this.absYpx = elem.offsetTop
+    watch(
+      () => props.viewHeight,
+      (newValue: number) => {
+        state.getPosition = newValue
+      }
+    )
+
+    onMounted(() => {
+      state.getViewHeight = props.viewHeight
+      state.getPosition = props.position
+      const elem: HTMLElement | null = document.getElementById(
+        `work-row-${props.postsRow + 1}`
+      )
+      if (elem) {
+        state.absYpx = elem.offsetTop
+      }
+    })
+
+    // スクロールに合わせてopacityを0から1まで変化するよう調整
+    const fadeInOut = (): number => {
+      const fadeIn = normalization(
+        -state.bigBoxH,
+        -(state.bigBoxH - state.smallBoxH - state.topPadding),
+        -state.getPosition + state.absYpx
+      )
+      const fadeOut = normalization(
+        -(state.bigBoxH - state.smallBoxH) - state.smallBoxH,
+        -(state.bigBoxH - state.smallBoxH - state.bottomPadding),
+        state.getPosition - state.absYpx + state.getViewHeight - state.bigBoxH
+      )
+      return cutMinMax(0, 1, Math.min(fadeIn, fadeOut))
     }
-  },
-  methods: {
-    fadeInOut() {
-      const fadeIn = this.normalization(
-        -this.bigBoxH,
-        -(this.bigBoxH - this.smallBoxH - this.topPadding),
-        -this.getPosition + this.absYpx
-      )
-      const fadeOut = this.normalization(
-        -(this.bigBoxH - this.smallBoxH) - this.smallBoxH,
-        -(this.bigBoxH - this.smallBoxH - this.bottomPadding),
-        this.getPosition - this.absYpx + this.getViewHeight - this.bigBoxH
-      )
-      return this.cutMinMax(0, 1, Math.min(fadeIn, fadeOut))
-    },
-    cutMinMax(min: number, max: number, data: number): number {
+    // 最大値と最小値を指定して、それ以上orそれ以下のとき値固定
+    const cutMinMax = (min: number, max: number, data: number): number => {
       if (data > max) {
         return max
       } else if (data < min) {
@@ -120,10 +154,18 @@ export default Vue.extend({
       } else {
         return data
       }
-    },
-    normalization(min: number, max: number, data: number): number {
+    }
+    // 正規化
+    const normalization = (min: number, max: number, data: number): number => {
       return (data - min) / (max - min)
-    },
+    }
+
+    return {
+      state,
+      heightShoter,
+      getFadeInOut,
+      rotateXYZ,
+    }
   },
 })
 </script>
