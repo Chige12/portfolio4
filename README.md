@@ -1,6 +1,14 @@
 # portfolio4
 
+- Headless CMS: [Contentful](https://www.contentful.com/)
+- Front: [Nuxt.js](https://nuxtjs.org) × Typescript
+  - use Vue3.0 Composition API => [Nuxt Composition API](https://composition-api.nuxtjs.org/)
+  - HTML >>> [Pug](https://pugjs.org/)
+  - CSS >>> [SCSS (Sass)](https://sass-lang.com/)
+
 ## Build Setup
+1. create `.env` file
+2. run command
 
 ```bash
 # install dependencies
@@ -16,5 +24,3 @@ $ yarn start
 # generate static project
 $ yarn generate
 ```
-
-For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
