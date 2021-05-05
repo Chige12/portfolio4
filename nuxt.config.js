@@ -88,7 +88,7 @@ export default {
 
   // Environment: https://qiita.com/taai/items/cbc61b9b4a18aacad57e
   publicRuntimeConfig: {
-    baseURL: process.env.BASE_URL || 'http://locahost:3000',
+    baseURL: process.env.BASE_URL,
   },
   privateRuntimeConfig: {
     ctflSpaceId: process.env.CTFL_SPACE_ID,
