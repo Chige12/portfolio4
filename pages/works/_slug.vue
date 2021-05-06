@@ -1,21 +1,22 @@
 <template lang="pug">
   .work-one(v-if="state.post.fields")
-    header.top-image(:style="`background-image: url(${state.post.fields.topImage.fields.file.url});`" :alt="state.post.fields.topImage.fields.title")
-      .header-top
-        nuxt-link(to="/works").back-link ◀︎ Back
+    .top-image(
+      :style="`background-image: url(${state.post.fields.topImage.fields.file.url});`"
+      :alt="state.post.fields.topImage.fields.title"
+      :class="{'top-image--mono': 400 < state.position}"
+      )
+    .header-top
+      nuxt-link(to="/works").back-link ◀︎ Back
+    header.header
       .header-bottom
         .container
-          h1.title {{state.post.fields.title}}
-          p {{state.post.fields.description}}
-          p {{state.post.fields.date}}
-    main
+          h1.header-title {{state.post.fields.title}}
+          p.header-description {{state.post.fields.description}}
+          p.header-date(v-if="formatDateSinceUntil") Date: {{formatDateSinceUntil}}
+    main.main
       .container
-        .article(v-html="toHtmlString(state.post.fields.article)")
-        ul.gallery-list(v-if="state.post.fields.gallery")
-          li.gallery-list-one(v-for="photo in state.post.fields.gallery" :key="`${photo.fields.title}`")
-            img.gallery-photo(:src="photo.fields.file.url" :alt="photo.fields.title")
-            p.gallery-title {{photo.fields.title}}
-            p.gallery-description {{photo.fields.description}}
+        GalleryList(v-if="state.post.fields.gallery" :gallery="state.post.fields.gallery")
+        MarkdownArticle(:article="state.post.fields.article")
 </template>
 <script lang="ts">
 import {
@@ -29,8 +30,10 @@ import {
   watch,
 } from '@nuxtjs/composition-api'
 
-import { documentToHtmlString } from '@contentful/rich-text-html-renderer'
 import client from '~/plugins/contentful.js'
+
+import GalleryList from '~/components/works/galleryList.vue'
+import MarkdownArticle from '~/components/works/markdownArticle.vue'
 
 type State = {
   post: any
@@ -39,6 +42,10 @@ type State = {
 }
 
 export default defineComponent({
+  components: {
+    GalleryList,
+    MarkdownArticle,
+  },
   setup() {
     // 現在のslugを取得
     const route = useRoute()
@@ -63,9 +70,39 @@ export default defineComponent({
       viewHeight: 0,
     })
 
-    // Contentfullの記事をHTMLに変換
-    const toHtmlString = (obj: any) => {
-      return documentToHtmlString(obj)
+    const formatDateSinceUntil = computed(() => {
+      const dateFormat = state.post.fields.dateFormat
+
+      const since = state.post.fields.date
+        ? formatDate(state.post.fields.date)
+        : null
+      if (dateFormat === '<since: yyyy/mm/dd>' && since) {
+        return since
+      }
+      if (dateFormat === '<since: yyyy/mm/dd> 〜 Now' && since) {
+        return `${since} 〜 Now`
+      }
+
+      const until = state.post.fields.until
+        ? formatDate(state.post.fields.until)
+        : null
+      if (
+        dateFormat === '<since: yyyy/mm/dd> 〜 <until: yyyy/mm/dd>' &&
+        since &&
+        until
+      ) {
+        return `${since} 〜 ${until}`
+      }
+
+      return null
+    })
+
+    const formatDate = (dd: string) => {
+      const date = new Date(dd)
+      const YYYY = date.getFullYear()
+      const MM = date.getMonth() + 1
+      const DD = date.getDate()
+      return `${YYYY}/${MM}/${DD}`
     }
 
     // スクロール量とwindowサイズを取得 今後使う予定
@@ -88,21 +125,27 @@ export default defineComponent({
 
     return {
       state,
-      toHtmlString,
+      formatDateSinceUntil,
     }
   },
 })
 </script>
 <style lang="scss" scoped>
 .work-one {
+  position: relative;
   height: 100%;
 }
 .top-image {
-  position: relative;
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   background-position: center center;
   background-size: cover;
+  z-index: -1;
+  transform: scale(1);
+  transition: 0.3s ease-in-out;
   &::before {
     content: '';
     position: absolute;
@@ -110,19 +153,40 @@ export default defineComponent({
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(75, 87, 133, 0.3);
+    background: rgba(#4e648a, 0.3);
+    z-index: 0;
+    transform: scale(1);
+    transition: 0.3s ease-in-out;
+  }
+  &--mono {
+    transform: scale(1.01);
+    filter: grayscale(0.5) brightness(70%);
+    &::before {
+      background: rgba(#4e648a, 0.5);
+      backdrop-filter: blur(8px);
+    }
   }
 }
+.header {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 1px 8px rgba($theme-navy, 0.8));
+}
 .header-top {
-  position: absolute;
+  position: fixed;
   top: 32px;
   left: 32px;
+  z-index: 3;
+  filter: drop-shadow(0 1px 8px rgba($theme-navy, 0.8));
+  .back-link {
+    color: white;
+    padding: 4px;
+    font-size: 24px;
+    text-decoration: none;
+  }
 }
-.back-link {
-  color: white;
-  padding: 4px;
-  font-size: 24px;
-}
+
 .header-bottom {
   position: absolute;
   width: 100%;
@@ -130,35 +194,20 @@ export default defineComponent({
   left: 0;
   color: white;
   padding: 32px 0 40px;
-  background: rgba(58, 60, 67, 0.3);
-  backdrop-filter: blur(10px);
+}
+.header-description {
+  margin-top: 8px;
+}
+.header-date {
+  margin-top: 4px;
+}
+.main {
+  border-radius: 32px 32px 0 0;
+  background: rgba($white, 0.92);
 }
 .article {
-  padding: 80px 0;
+  padding: 64px 0 80px;
   font-size: 18px;
   line-height: 2;
-}
-
-.gallery-list {
-  display: flex;
-  flex-wrap: wrap;
-  margin: 0 -16px 32px;
-  width: calc(100% + 32px);
-  list-style: none;
-}
-
-.gallery-list-one {
-  margin: 0 16px 32px;
-  width: calc(50% - 32px);
-}
-.gallery-photo {
-  width: 100%;
-  border-radius: 8px;
-}
-.gallery-title {
-  padding: 6px 2px;
-}
-.gallery-description {
-  padding: 0 2px;
 }
 </style>

@@ -25,6 +25,8 @@ import {
   watch,
 } from '@nuxtjs/composition-api'
 
+import { cutMinMax, minMaxNormalization } from '@/composables/scrollFunctions'
+
 type State = {
   workListOneStyle: string
   getPosition: number
@@ -65,14 +67,28 @@ export default defineComponent({
   setup(props: Props) {
     const state = reactive<State>({
       workListOneStyle: '',
-      getPosition: 0,
-      getViewHeight: 0,
+      getPosition: props.position,
+      getViewHeight: props.viewHeight,
       absYpx: 0,
       topPadding: 24,
       bottomPadding: 24,
       bigBoxH: 240,
       smallBoxH: 60,
     })
+
+    // propsの変更検知
+    watch(
+      () => props.position,
+      (newValue: number) => {
+        state.getPosition = newValue
+      }
+    )
+    watch(
+      () => props.viewHeight,
+      (newValue: number) => {
+        state.getPosition = newValue
+      }
+    )
 
     // 消える前にスクロールに合わせてカードの高さを短くする
     const heightShoter = computed((): number => {
@@ -107,22 +123,8 @@ export default defineComponent({
       }
     })
 
-    watch(
-      () => props.position,
-      (newValue: number) => {
-        state.getPosition = newValue
-      }
-    )
-    watch(
-      () => props.viewHeight,
-      (newValue: number) => {
-        state.getPosition = newValue
-      }
-    )
-
     onMounted(() => {
-      state.getViewHeight = props.viewHeight
-      state.getPosition = props.position
+      // absYpx 要素の絶対値Y座標を設定
       const elem: HTMLElement | null = document.getElementById(
         `work-row-${props.postsRow + 1}`
       )
@@ -133,31 +135,17 @@ export default defineComponent({
 
     // スクロールに合わせてopacityを0から1まで変化するよう調整
     const fadeInOut = (): number => {
-      const fadeIn = normalization(
+      const fadeIn = minMaxNormalization(
         -state.bigBoxH,
         -(state.bigBoxH - state.smallBoxH - state.topPadding),
         -state.getPosition + state.absYpx
       )
-      const fadeOut = normalization(
+      const fadeOut = minMaxNormalization(
         -(state.bigBoxH - state.smallBoxH) - state.smallBoxH,
         -(state.bigBoxH - state.smallBoxH - state.bottomPadding),
         state.getPosition - state.absYpx + state.getViewHeight - state.bigBoxH
       )
       return cutMinMax(0, 1, Math.min(fadeIn, fadeOut))
-    }
-    // 最大値と最小値を指定して、それ以上orそれ以下のとき値固定
-    const cutMinMax = (min: number, max: number, data: number): number => {
-      if (data > max) {
-        return max
-      } else if (data < min) {
-        return min
-      } else {
-        return data
-      }
-    }
-    // 正規化
-    const normalization = (min: number, max: number, data: number): number => {
-      return (data - min) / (max - min)
     }
 
     return {
