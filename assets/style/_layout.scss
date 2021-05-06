@@ -11,10 +11,13 @@ html {
 
 // https://youtu.be/96EbOEChoIY?t=327
 body {
+  font-feature-settings: "pkna" 1;
+  line-break: normal;
+}
+
+.font-kerning {
   font-feature-settings: "palt" 1;
   font-kerning: normal;
-  line-break: normal;
-  letter-spacing: 0.05em;
 }
 
 *,

@@ -92,6 +92,7 @@ export default {
   generate: {
     // choose to suit your project | Nuxt Composition API
     interval: 2000,
+    fallback: true,
   },
 
   // Environment: https://qiita.com/taai/items/cbc61b9b4a18aacad57e

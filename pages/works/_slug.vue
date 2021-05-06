@@ -3,15 +3,15 @@
     .top-image(
       :style="`background-image: url(${state.post.fields.topImage.fields.file.url});`"
       :alt="state.post.fields.topImage.fields.title"
-      :class="{'top-image--mono': 400 < state.position}"
+      :class="{'top-image--blur': 400 < state.position}"
       )
     .header-top
       nuxt-link(to="/works").back-link ◀︎ Back
     header.header
       .header-bottom
         .container
-          h1.header-title {{state.post.fields.title}}
-          p.header-description {{state.post.fields.description}}
+          h1.header-title.font-kerning {{state.post.fields.title}}
+          p.header-description.font-kerning {{state.post.fields.description}}
           p.header-date(v-if="formatDateSinceUntil") Date: {{formatDateSinceUntil}}
     main.main
       .container
@@ -143,7 +143,7 @@ export default defineComponent({
   height: 100%;
   background-position: center center;
   background-size: cover;
-  z-index: -1;
+  z-index: -2;
   transform: scale(1);
   transition: 0.3s ease-in-out;
   &::before {
@@ -153,17 +153,17 @@ export default defineComponent({
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(#4e648a, 0.3);
     z-index: 0;
     transform: scale(1);
     transition: 0.3s ease-in-out;
   }
-  &--mono {
+  &--blur {
     transform: scale(1.01);
-    filter: grayscale(0.5) brightness(70%);
+    filter: brightness(50%);
+    opacity: 0.8;
     &::before {
-      background: rgba(#4e648a, 0.5);
       backdrop-filter: blur(8px);
+      background-color: rgba(#4e648a, 0.4);
     }
   }
 }
@@ -204,6 +204,7 @@ export default defineComponent({
 .main {
   border-radius: 32px 32px 0 0;
   background: rgba($white, 0.92);
+  padding-bottom: 2000px;
 }
 .article {
   padding: 64px 0 80px;

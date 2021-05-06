@@ -13,7 +13,7 @@
           nuxt-link.works-card(:to="`/works/${post.fields.slug}`")
             .top-image(:style="`background-image: url(${post.fields.topImage.fields.file.url});`" :alt="post.fields.topImage.fields.title")
             .over-box
-              .title {{post.fields.title}}
+              .title.font-kerning {{post.fields.title}}
         .culumn.culumn--empty(v-else)
 </template>
 <script lang="ts">
