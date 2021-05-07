@@ -141,7 +141,7 @@ export default defineComponent({
   left: 0;
   width: 100%;
   height: 100%;
-  background-position: center center;
+  background-position: center bottom;
   background-size: cover;
   z-index: -2;
   transform: scale(1);

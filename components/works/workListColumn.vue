@@ -70,9 +70,9 @@ export default defineComponent({
       getPosition: props.position,
       getViewHeight: props.viewHeight,
       absYpx: 0,
-      topPadding: 24,
-      bottomPadding: 24,
-      bigBoxH: 240,
+      topPadding: 48,
+      bottomPadding: 48,
+      bigBoxH: 260,
       smallBoxH: 60,
     })
 
@@ -161,19 +161,18 @@ export default defineComponent({
 .worklist-one {
   position: absolute;
   width: 100%;
-  top: 0;
   left: 0;
   height: $culumnHeightMax;
   z-index: 1;
   &.sticky-top {
     position: fixed;
-    top: 24px; // same topPadding
+    top: 48px; // same topPadding
     left: 0;
     z-index: 0;
   }
   &.sticky-bottom {
     position: fixed;
-    bottom: 24px; // same bottomPadding
+    bottom: 48px; // same bottomPadding
     left: 0;
     z-index: 0;
   }
@@ -189,7 +188,6 @@ export default defineComponent({
   display: flex;
   justify-content: center;
   gap: 40px;
-  padding: 0 40px;
 }
 .culumn {
   width: $culumnHeightMax * 1920 / 1080;

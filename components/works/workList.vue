@@ -79,6 +79,6 @@ export default defineComponent({
   position: relative;
   width: 100%;
   height: $culumnHeightMax;
-  margin-bottom: 40px;
+  margin-bottom: 80px;
 }
 </style>

@@ -45,6 +45,13 @@ export default defineComponent({
               alternativeNode.height =
                 alternativeNode.contentDocument.body.scrollHeight + 50
             }
+          } else if (script.src.includes('//speakerdeck.com/')) {
+            alternativeNode = document.createElement('script')
+            alternativeNode.async = true
+            alternativeNode.classList.add('speakerdeck-embed')
+            alternativeNode.setAttribute('data-id', script.dataset.id)
+            alternativeNode.setAttribute('data-ratio', script.dataset.ratio)
+            alternativeNode.src = script.src
           } else {
             alternativeNode = document.createElement('script')
             alternativeNode.src = script.src
@@ -59,41 +66,77 @@ export default defineComponent({
   },
 })
 </script>
-<style>
-.article-contents iframe {
-  width: 100%;
-  border: none;
-  overflow: hidden;
-}
-.article-contents .columns-2 {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 24px;
-  padding: 32px 0;
-}
-.article-contents .columns-2 > .column {
-  width: calc(50% - 12px);
-}
+<style lang="scss">
+.article-contents {
+  iframe {
+    width: 100%;
+    border: none;
+    overflow: hidden;
+  }
+  .columns-2 {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    padding: 32px 0;
+    & > .column {
+      width: calc(50% - 12px);
+    }
+  }
+  .columns-3 {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    padding: 32px 0;
+    & > .column {
+      width: calc(33.33% - 16px);
+    }
+    & > .column-2 {
+      width: calc((33.33% - 16px) * 2);
+    }
+  }
+  p {
+    margin-bottom: 1em;
+  }
+  img {
+    display: block;
+    width: 100%;
+  }
+  .caption {
+    text-align: center;
+    font-size: 16px;
+  }
 
-.article-contents .columns-3 {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 24px;
-  padding: 32px 0;
-}
-.article-contents .columns-3 > .column {
-  width: calc(33.33% - 16px);
-}
-.article-contents .columns-3 > .column-2 {
-  width: calc((33.33% - 16px) * 2);
-}
+  // 16:9の構造を作成
+  .aspect16-9 {
+    width: 100%;
+    padding-top: 56.25%;
+    position: relative;
+    margin: 32px 0;
+  }
+  .aspect16-9-child {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
 
-.article-contents img {
-  display: block;
-  width: 100%;
-}
-.article-contents .caption {
-  text-align: center;
-  font-size: 16px;
+  // Youtube: 16:9の構造を作成
+  .youtube {
+    width: 100%;
+    padding-top: 56.25%;
+    position: relative;
+    margin: 32px 0;
+  }
+  .youtube-iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .speakerdeck-embed-wrapper {
+    margin: 32px 0;
+  }
 }
 </style>
