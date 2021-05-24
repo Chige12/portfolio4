@@ -92,6 +92,7 @@ export default defineComponent({
         const clientRect = root.value.getBoundingClientRect()
 
         // $storeを使うまでしばらくこのまま
+        // eslint-disable-next-line no-console
         console.log(clientRect)
         // this.$store.commit('styles/setAboutPageTop', clientRect.top - 112)
       }
