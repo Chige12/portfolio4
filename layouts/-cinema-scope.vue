@@ -25,10 +25,13 @@ export default defineComponent({
       isLoadFinished: false,
     })
     onMounted(() => {
+      // Data fetch後に開くようにする
+      // https://qiita.com/knitbow/items/435df067a72159888b68
       window.addEventListener('load', loadFinish)
       if (location.hostname === 'localhost') {
         setTimeout(loadFinish, 100)
       }
+      setTimeout(loadFinish, 2000)
     })
     onBeforeUnmount(() => {
       window.removeEventListener('load', loadFinish)
