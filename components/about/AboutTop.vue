@@ -90,6 +90,8 @@ export default defineComponent({
     const goAboutPageTop = () => {
       if (root.value) {
         const clientRect = root.value.getBoundingClientRect()
+
+        // $storeを使うまでしばらくこのまま
         console.log(clientRect)
         // this.$store.commit('styles/setAboutPageTop', clientRect.top - 112)
       }
