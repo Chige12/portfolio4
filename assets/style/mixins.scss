@@ -38,6 +38,31 @@
   }
 }
 
+@mixin fixed(
+  $top: null,
+  $left: null,
+  $right: null,
+  $bottom: null,
+  $z: $z-default,
+  $margin: auto
+) {
+  position: fixed;
+  margin: $margin;
+  z-index: $z;
+  @if $top != null {
+    top: $top;
+  }
+  @if $right != null {
+    right: $right;
+  }
+  @if $bottom != null {
+    bottom: $bottom;
+  }
+  @if $left != null {
+    left: $left;
+  }
+}
+
 @mixin flex(
   $wrap: nowrap,
   $justifyContent: space-between,

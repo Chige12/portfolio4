@@ -18,7 +18,7 @@ export default defineComponent({
     },
   },
   setup() {
-    const root = ref()
+    const root = ref<HTMLElement>()
 
     onMounted(() => {
       runScript()

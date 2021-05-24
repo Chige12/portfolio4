@@ -68,7 +68,7 @@ export default {
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
-  modules: ['@nuxtjs/style-resources', '@nuxtjs/markdownit'],
+  modules: ['@nuxtjs/style-resources', '@nuxtjs/markdownit', '@nuxtjs/svg'],
 
   // https://github.com/nuxt-community/style-resources-module/
   styleResources: {
