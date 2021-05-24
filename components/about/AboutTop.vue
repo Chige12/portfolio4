@@ -65,18 +65,18 @@ export default defineComponent({
         },
         {
           property: 'Age',
-          value: '20',
+          value: '22',
           link: '',
         },
         {
           property: 'Living',
-          value: 'Kyoto',
+          value: 'Nara ⇄ Kyoto',
           link: '',
         },
         {
           property: 'Affiliation',
-          value: '奈良高専 専攻科 (NITNC)',
-          link: 'https://www.nara-k.ac.jp/',
+          value: '奈良先端大 (NAIST) SE Lab.',
+          link: 'https://naist-se.github.io/',
         },
       ],
     })
