@@ -39,7 +39,7 @@ export default defineComponent({
   @include absolute(0, 0, 0, 0);
   width: 100%;
   height: calc(100% - (112px * 2));
-  background: $light-gray;
+  background: $theme-gray-light-3;
   &-img {
     display: block;
     width: 100%;

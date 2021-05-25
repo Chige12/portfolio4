@@ -35,7 +35,7 @@ export default defineComponent({
   position: relative;
   width: 100%;
   height: 112px;
-  background: $light-gray;
+  background: $theme-gray-light-3;
   &-img {
     display: block;
     width: 100%;
