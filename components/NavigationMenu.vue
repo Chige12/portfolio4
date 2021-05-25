@@ -215,7 +215,7 @@ a:visited {
   z-index: 21;
   .link-over-text--gray {
     transition: 0.8s $bezier-fast-ease-out;
-    color: $theme-gray-d1;
+    color: $theme-gray-dark-1;
     z-index: 22;
   }
 }

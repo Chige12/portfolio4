@@ -124,7 +124,7 @@ export default defineComponent({
 </script>
 <style lang="scss">
 .about-top {
-  margin: 0 32px;
+  margin: 0 48px;
   @include flex();
 }
 .about-top-box {
@@ -134,8 +134,8 @@ export default defineComponent({
   }
 }
 .about-chige-icon {
-  margin: 48px 0;
-  width: 148px + (64px * 2);
+  margin: 64px 0;
+  width: 148px + (72px * 2);
   flex-shrink: 0;
   &-link {
     display: block;
@@ -143,7 +143,7 @@ export default defineComponent({
     width: 148px;
     height: 148px;
     border-radius: 50%;
-    box-shadow: 0 0 48px rgba($theme-gray-d2, 0.24);
+    box-shadow: 0 0 48px rgba($theme-navy, 0.16);
     overflow: hidden;
     transition: 0.5s $bezier-fast-ease-out;
     &:hover,
@@ -165,16 +165,16 @@ export default defineComponent({
   }
 }
 .real-name-en {
-  @include roboto($size: 40px, $color: $theme-gray-d2, $weight: $font-bold);
+  @include roboto($size: 40px, $color: $theme-navy, $weight: $font-bold);
   text-align: right;
 }
 .real-name-ja {
-  @include noto($size: 18px, $color: $theme-gray-d2);
+  @include noto($size: 18px, $color: $theme-navy);
   text-align: right;
 }
 .about-comment {
   margin-top: 24px;
-  @include noto($size: 16px, $color: $theme-gray-d3);
+  @include noto($size: 16px, $color: $theme-navy);
   text-align: right;
   letter-spacing: 0.1em;
 }
@@ -185,18 +185,18 @@ export default defineComponent({
 }
 .about-property {
   width: 128px;
-  @include roboto($size: 16px, $weight: $font-bold);
+  @include roboto($size: 16px, $color: $theme-navy, $weight: $font-bold);
 }
 .about-value {
-  @include noto($size: 16px, $color: $theme-gray-d3);
+  @include noto($size: 16px, $color: $theme-navy);
   a {
-    @include noto($size: 16px, $color: $theme-gray-d3);
+    @include noto($size: 16px, $color: $theme-navy);
     transition: 0.3s $bezier-fast-ease-out;
     .link-icon {
       margin-left: 4px;
       transition: 0.3s $bezier-fast-ease-out;
       .link_svg {
-        fill: $theme-gray-d3;
+        fill: $theme-navy;
       }
     }
     &:hover,

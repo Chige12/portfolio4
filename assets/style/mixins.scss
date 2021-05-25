@@ -1,4 +1,4 @@
-@mixin roboto($size: 16px, $color: $theme-gray-d2, $weight: $font-bold) {
+@mixin roboto($size: 16px, $color: $theme-navy, $weight: $font-bold) {
   font-family: $roboto-font;
   font-weight: $weight;
   font-size: $size;

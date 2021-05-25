@@ -109,7 +109,7 @@ $gallery-columns-num: 5;
   );
   border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 2px 10px rgba($theme-gray-d3, 0.3);
+  box-shadow: 0 2px 10px rgba($theme-gray-dark-2, 0.3);
   // width:height = 1:1
   &::before {
     pointer-events: none;
@@ -173,7 +173,7 @@ $gallery-columns-num: 5;
 }
 .hooper-slide-container {
   height: 100%;
-  filter: drop-shadow(0 2px 10px rgba($theme-gray-d2, 0.3));
+  filter: drop-shadow(0 2px 10px rgba($theme-gray-dark-1, 0.3));
 }
 .hooper-slide-contents {
   height: 100%;

@@ -200,7 +200,7 @@ export default defineComponent({
   position: relative;
   border-radius: 22px;
   overflow: hidden;
-  box-shadow: 0 2px 10px rgba($theme-gray-d2, 0.3);
+  box-shadow: 0 2px 10px rgba($theme-gray-dark-1, 0.3);
   .top-image {
     width: 100%;
     height: 100%;

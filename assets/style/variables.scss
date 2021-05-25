@@ -1,43 +1,47 @@
 //color
-$black: #333;
-$dark-gray: #444;
-$gray: #666;
+$black:      #333;
+$dark-gray:  #444;
+$gray:       #666;
 $light-gray: #eee;
-$light-gray-d1: #e5e5e5;
-$white: #fff;
+$white:      #fff;
 
-$theme-gray: #c9cac2;
-$theme-green: #869849;
-$theme-mint: #48a290;
-$theme-navy: #343141;
-$theme-pink: #c42a66;
+// https://contrast-grid.eightshapes.com/?background-colors=&foreground-colors=%23FFFFFF%2C%20White%0D%0A%23e7e8e2%0D%0A%23c9cac2%0D%0A%23a6a79e%0D%0A%2375766d%0D%0A%23575951%0D%0A%0D%0A%23a0b168%0D%0A%23869849%0D%0A%23637622%0D%0A%2378b5a9%0D%0A%2348a290%0D%0A%232D7A71%0D%0A%23312f39%0D%0A%23c42a66&es-color-form__tile-size=compact
 
-$theme-gray-d1: #bbbdb3;
-$theme-gray-d2: #9c9d96;
-$theme-gray-d3: #727469;
+$theme-mint-l1:  #a0b168; // on navy  AA   (5.6)
+$theme-green:    #859749; // on white AA18 (3.1)
+$theme-green-d1: #637622; // on white AA   (5)
+$theme-mint-l1:  #78b5a9; // on navy  AA   (5.6)
+$theme-mint:     #49a290; // on white AA18 (3)
+$theme-mint-d1:  #2D7A71; // on white AA   (5)
+$theme-navy:     #312f39; // on white AAA  (13.1)
+$theme-pink:     #c42a66; // on white AA   (5.4)
 
-$theme-mint-l1: #7ab5a9;
+$theme-gray-light-3: #e7e8e2; // on navy  AAA (10)
+$theme-gray-light-2: #c9cac2; // on navy  AAA (7.9)
+$theme-gray-light-1: #a6a79e; // on navy  AA  (5.4)
+$theme-gray-dark-1:  #75766d; // on white AA  (4.6)
+$theme-gray-dark-2:  #575951; // on white AAA (7.1)
 
-$official-twitter: #55acee;
-$official-facebook: #455a9e;
-$official-github: #231815;
+$official-twitter:      #55acee;
+$official-facebook:     #455a9e;
+$official-github:       #231815;
 $official-speaker-deck: #009287;
-$official-tumblr: #001834;
-$official-hatena-blog: #38393c;
-$official-vimeo: #32b8e8;
-$official-pixiv: #0096fa;
-$official-youtube: #f00;
+$official-tumblr:       #001834;
+$official-hatena-blog:  #38393c;
+$official-vimeo:        #32b8e8;
+$official-pixiv:        #0096fa;
+$official-youtube:      #f00;
 
 //font-family
-$noto-font: 'Noto Sans JP', sans-serif;
-$roboto-font: 'Roboto', sans-serif;
+$noto-font:    'Noto Sans JP', sans-serif;
+$roboto-font:  'Roboto', sans-serif;
 $font-regular: 400;
-$font-medium: 500;
-$font-bold: 700;
+$font-medium:  500;
+$font-bold:    700;
 
 //animation
-$bezier-fast-ease-out: cubic-bezier(0.1, 0, 0, 1);
-$bezier-fast-ease-in: cubic-bezier(0, 0.1, 1, 0);
+$bezier-fast-ease-out:    cubic-bezier(0.1, 0, 0, 1);
+$bezier-fast-ease-in:     cubic-bezier(0, 0.1, 1, 0);
 $bezier-fast-ease-in-out: cubic-bezier(0.77, 0, 0.23, 1);
 
 $bezier-ease-out: cubic-bezier(0.06, 0.67, 0.02, 1);
@@ -54,18 +58,3 @@ $bezier-ease-out: cubic-bezier(0.06, 0.67, 0.02, 1);
 
 $culumnHeightMax: 260px;
 $culumnHeightMin: 60px;
-
-// .page-enter {
-//   transform: translateX(100%);
-// }
-// .page-enter-to {
-//   transform: translateX(0);
-//   transition: 0.5s $bezier-fast-ease-out;
-// }
-// .page-leave {
-//   transform: translateX(0);
-// }
-// .page-leave-to {
-//   transform: translateX(100%);
-//   transition: 0.5s $bezier-fast-ease-out;
-// }

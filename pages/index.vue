@@ -36,7 +36,6 @@ export default defineComponent({
       position: 0,
     })
     onMounted(() => {
-      // const indexPage: Element = this.$el
       window.addEventListener('scroll', scrollEvent)
     })
     onBeforeUnmount(() => {
@@ -48,9 +47,9 @@ export default defineComponent({
     const clickMeTextChange = () => {
       state.position =
         document.documentElement.scrollTop || document.body.scrollTop
-      if (state.position >= 288 && !state.isClickMeChanged) {
+      if (state.position >= 100 && !state.isClickMeChanged) {
         state.isClickMeChanged = true
-      } else if (state.position < 288 && state.isClickMeChanged) {
+      } else if (state.position < 100 && state.isClickMeChanged) {
         state.isClickMeChanged = false
       }
     }

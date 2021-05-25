@@ -41,7 +41,7 @@ export default defineComponent({
   @include absolute($bottom: 36px, $left: 0, $right: 0);
   transition: 0.8s $bezier-fast-ease-out;
   &.--click-me {
-    bottom: -20px;
+    bottom: -32px;
   }
 }
 .click-me-text {

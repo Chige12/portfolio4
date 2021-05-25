@@ -93,11 +93,15 @@ export default defineComponent({
     width: 100%;
     margin-bottom: 16px;
     .chige_logo_svg {
-      fill: $theme-gray-d2;
+      fill: $theme-gray-dark-1; //lighten($theme-navy, 4%);
     }
   }
   .logo-txt {
-    @include roboto($size: 22px, $weight: $font-bold);
+    @include roboto(
+      $size: 22px,
+      $color: darken($theme-gray-dark-1, 5%),
+      $weight: $font-bold
+    );
     text-align: center;
   }
 }

@@ -86,4 +86,19 @@ export default defineComponent({
   padding-top: 80px;
   height: 100%;
 }
+
+.page-enter {
+  transform: translateX(100%);
+}
+.page-enter-to {
+  transform: translateX(0);
+  transition: 0.4s $bezier-fast-ease-out;
+}
+.page-leave {
+  transform: translateX(0);
+}
+.page-leave-to {
+  transform: translateX(100%);
+  transition: 0.4s $bezier-fast-ease-out;
+}
 </style>
