@@ -8,7 +8,6 @@ import {
   computed,
   reactive,
   useAsync,
-  watch,
 } from '@nuxtjs/composition-api'
 import client from '~/plugins/contentful.js'
 
@@ -24,16 +23,12 @@ export default defineComponent({
   },
   setup() {
     // 記事一覧を取得
-    const entries = useAsync(() =>
-      client.getEntries({
+    useAsync(async () => {
+      const entries = await client.getEntries({
         content_type: 'works',
+        order: '-fields.date',
       })
-    )
-    // 記事一覧をstateに反映
-    watch(entries, (newPosts) => {
-      if (newPosts) {
-        state.posts = newPosts.items
-      }
+      state.posts = entries.items
     })
 
     const state = reactive<State>({
@@ -43,20 +38,11 @@ export default defineComponent({
     const columnPosts = computed(() => {
       if (state.posts) {
         // 2カラムにする
-        return getColumnArray(sortDate(state.posts), 2)
+        return getColumnArray(state.posts, 2)
       } else {
         return []
       }
     })
-
-    // 日付でソート
-    const sortDate = (array: Array<any>): Array<any> => {
-      return array.sort((a, b) => {
-        if (a.fields.date < b.fields.date) return 1
-        if (a.fields.date > b.fields.date) return -1
-        return 0
-      })
-    }
 
     // カラム配列(多次元配列)にする ex.[1,2,3,4,5] => [[1,2], [3,4], [5, null]]
     const getColumnArray = (array: Array<any>, columnNum: number) => {
@@ -92,13 +78,13 @@ export default defineComponent({
 }
 .page-enter-to {
   transform: translateX(0);
-  transition: 0.4s $bezier-fast-ease-out;
+  transition: 0.4s $ease-out;
 }
 .page-leave {
   transform: translateX(0);
 }
 .page-leave-to {
   transform: translateX(100%);
-  transition: 0.4s $bezier-fast-ease-out;
+  transition: 0.4s $ease-out;
 }
 </style>

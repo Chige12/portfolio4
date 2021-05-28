@@ -13,7 +13,7 @@
           nuxt-link.works-card(:to="`/works/${post.fields.slug}`")
             .top-image(:style="`background-image: url(${post.fields.topImage.fields.file.url});`" :alt="post.fields.topImage.fields.title")
             .over-box
-              .title.font-kerning {{post.fields.title}}
+              .title {{post.fields.title}}
         .culumn.culumn--empty(v-else)
 </template>
 <script lang="ts">
@@ -31,6 +31,7 @@ type State = {
   workListOneStyle: string
   getPosition: number
   getViewHeight: number
+  isFirstReloading: boolean
   absYpx: number
   topPadding: number
   bottomPadding: number
@@ -69,6 +70,7 @@ export default defineComponent({
       workListOneStyle: '',
       getPosition: props.position,
       getViewHeight: props.viewHeight,
+      isFirstReloading: true,
       absYpx: 0,
       topPadding: 48,
       bottomPadding: 48,
@@ -81,12 +83,15 @@ export default defineComponent({
       () => props.position,
       (newValue: number) => {
         state.getPosition = newValue
+        if (state.isFirstReloading) {
+          absYpxReload()
+        }
       }
     )
     watch(
       () => props.viewHeight,
       (newValue: number) => {
-        state.getPosition = newValue
+        state.getViewHeight = newValue
       }
     )
 
@@ -124,14 +129,19 @@ export default defineComponent({
     })
 
     onMounted(() => {
+      absYpxReload()
+    })
+
+    const absYpxReload = () => {
       // absYpx 要素の絶対値Y座標を設定
       const elem: HTMLElement | null = document.getElementById(
         `work-row-${props.postsRow + 1}`
       )
       if (elem) {
         state.absYpx = elem.offsetTop
+        state.isFirstReloading = false
       }
-    })
+    }
 
     // スクロールに合わせてopacityを0から1まで変化するよう調整
     const fadeInOut = (): number => {
@@ -166,13 +176,13 @@ export default defineComponent({
   z-index: 1;
   &.sticky-top {
     position: fixed;
-    top: 48px; // same topPadding
+    top: 48px; // topPadding
     left: 0;
     z-index: 0;
   }
   &.sticky-bottom {
     position: fixed;
-    bottom: 48px; // same bottomPadding
+    bottom: 48px; // bottomPadding
     left: 0;
     z-index: 0;
   }
@@ -206,7 +216,7 @@ export default defineComponent({
     height: 100%;
     background-size: cover;
     background-position: center;
-    transition: 0.2s ease-out;
+    transition: 0.3s $ease-out;
   }
   .over-box {
     position: absolute;
@@ -217,11 +227,14 @@ export default defineComponent({
     padding: 8px 16px;
     display: flex;
     align-items: center;
-    color: white;
+    color: $white;
     border-radius: 14px;
-    background: rgba(black, 0.8);
+    background: rgba(darken($theme-gray-dark-2, 20%), 0.8);
     // backdrop-filter: blur(4px);
     transform: translate(0, 0);
+    .title {
+      @include font-kerning;
+    }
   }
   &:hover {
     .top-image {

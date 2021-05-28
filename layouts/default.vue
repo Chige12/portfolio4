@@ -45,7 +45,7 @@ export default defineComponent({
 // NaviMenu transition
 .NaviMenu-enter-active,
 .NaviMenu-leave-active {
-  transition: all 0.6s $bezier-fast-ease-out;
+  transition: all 0.6s $ease-out;
   transform: translateY(0);
 }
 .NaviMenu-enter,

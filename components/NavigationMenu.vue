@@ -133,7 +133,7 @@ a:visited {
   height: $size;
   border-radius: 50%;
   background: $color;
-  transition: 0.5s $bezier-fast-ease-out;
+  transition: 0.5s $ease-out;
 }
 
 .navi-menu-wrapper {
@@ -145,7 +145,7 @@ a:visited {
   padding: 0;
   box-shadow: 0 0 20px 20px transparent;
   overflow: hidden;
-  transition: 0.5s $bezier-fast-ease-out;
+  transition: 0.5s $ease-out;
 }
 .navi-menu-button {
   @include absolute($top: 0, $left: 0);
@@ -154,12 +154,12 @@ a:visited {
   height: 48px;
   padding: (48px - $dot-circle-width) / 2 24px;
   cursor: pointer;
-  transition: 0.5s $bezier-fast-ease-out;
+  transition: 0.5s $ease-out;
   .circle-dot {
     @include flex();
     width: 70px;
     height: $dot-circle-width;
-    transition: 0.5s $bezier-fast-ease-out;
+    transition: 0.5s $ease-out;
     &-green {
       @include circle-dot($dot-circle-width, $theme-green);
     }
@@ -180,7 +180,7 @@ a:visited {
   .link-cover {
     margin: 48px 0;
     height: 32px;
-    transition: 0.5s $bezier-fast-ease-out;
+    transition: 0.5s $ease-out;
   }
 }
 .link {
@@ -210,20 +210,19 @@ a:visited {
   }
 }
 .link-over--gray {
-  transition: all 0.8s $bezier-fast-ease-out,
-    background-color 0.5s $bezier-fast-ease-out;
+  transition: all 0.8s $ease-out, background-color 0.5s $ease-out;
   z-index: 21;
   .link-over-text--gray {
-    transition: 0.8s $bezier-fast-ease-out;
+    transition: 0.8s $ease-out;
     color: $theme-gray-dark-1;
     z-index: 22;
   }
 }
 .link-over--green {
-  transition: 0.8s 0.24s $bezier-fast-ease-out;
+  transition: 0.8s 0.24s $ease-out;
   z-index: 23;
   .link-over-text--green {
-    transition: 0.8s 0.24s $bezier-fast-ease-out;
+    transition: 0.8s 0.24s $ease-out;
     color: $theme-green;
     z-index: 24;
   }
@@ -237,10 +236,10 @@ a:visited {
     }
   }
   .link-over.link-over--green {
-    transition: 0.8s 0s $bezier-fast-ease-out;
+    transition: 0.8s 0s $ease-out;
     transform: translateX(-100%);
     .link-over-text.link-over-text--green {
-      transition: 0.8s 0s $bezier-fast-ease-out;
+      transition: 0.8s 0s $ease-out;
       transform: translateX(100%);
     }
   }
@@ -257,7 +256,7 @@ a:visited {
 .navi-menu-wrapper--hover {
   width: $menu-outline-width;
   padding: 0 $menu-padding;
-  background: #eee;
+  background: $light-gray;
   .navi-menu-button {
     width: $menu-outline-width;
     left: 0;
@@ -316,10 +315,10 @@ a:visited {
 
 // flash in fade out
 .flashIn-fadeOut-enter-active {
-  transition: 0 $bezier-fast-ease-out;
+  transition: 0 $ease-out;
 }
 .flashIn-fadeOut-leave-active {
-  transition: 0s 0.8s $bezier-fast-ease-out;
+  transition: 0s 0.8s $ease-out;
 }
 .flashIn-fadeOut-enter,
 .flashIn-fadeOut-leave-to {
@@ -327,19 +326,19 @@ a:visited {
 }
 // .link-over
 .flashIn-fadeOut-leave-active .link-over {
-  transition: all 0.5s $bezier-fast-ease-out;
+  transition: all 0.5s $ease-out;
 }
 .flashIn-fadeOut-enter .link-over,
 .flashIn-fadeOut-leave-to .link-over {
-  background: #eee;
+  background: $light-gray;
 }
 // .nuxt-link-exact-active .link-over
 .flashIn-fadeOut-leave-active .nuxt-link-exact-active .link-over {
-  transition: all 0.5s $bezier-fast-ease-out;
+  transition: all 0.5s $ease-out;
 }
 .flashIn-fadeOut-enter .nuxt-link-exact-active .link-over,
 .flashIn-fadeOut-leave-to .nuxt-link-exact-active .link-over {
-  background: #eee;
+  background: $light-gray;
 }
 
 .link:hover,

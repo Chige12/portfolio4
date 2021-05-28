@@ -143,9 +143,9 @@ export default defineComponent({
     width: 148px;
     height: 148px;
     border-radius: 50%;
-    box-shadow: 0 0 48px rgba($theme-navy, 0.16);
+    box-shadow: 0 0 40px rgba($theme-gray-dark-1, 0.16);
     overflow: hidden;
-    transition: 0.5s $bezier-fast-ease-out;
+    transition: 0.5s $ease-out;
     &:hover,
     &:focus {
       transform: scale(1.1);
@@ -191,10 +191,10 @@ export default defineComponent({
   @include noto($size: 16px, $color: $theme-navy);
   a {
     @include noto($size: 16px, $color: $theme-navy);
-    transition: 0.3s $bezier-fast-ease-out;
+    transition: 0.3s $ease-out;
     .link-icon {
       margin-left: 4px;
-      transition: 0.3s $bezier-fast-ease-out;
+      transition: 0.3s $ease-out;
       .link_svg {
         fill: $theme-navy;
       }

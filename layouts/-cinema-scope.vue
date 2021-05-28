@@ -54,7 +54,7 @@ export default defineComponent({
     width: 100%;
     height: 50%;
     background: $theme-navy;
-    transition: 0.3s $bezier-fast-ease-out;
+    transition: 0.3s $ease-out;
   }
   .cinema-scope-bottom {
     @include absolute($bottom: 0, $left: 0, $z: $z-cinema-scope);
@@ -62,7 +62,7 @@ export default defineComponent({
     width: 100%;
     height: 50%;
     background: $theme-navy;
-    transition: 0.3s $bezier-fast-ease-out;
+    transition: 0.3s $ease-out;
   }
   &.is-finish {
     .cinema-scope-top {

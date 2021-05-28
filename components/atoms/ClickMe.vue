@@ -39,7 +39,7 @@ export default defineComponent({
 }
 .click-me-wrapper {
   @include absolute($bottom: 36px, $left: 0, $right: 0);
-  transition: 0.8s $bezier-fast-ease-out;
+  transition: 0.8s $ease-out;
   &.--click-me {
     bottom: -32px;
   }
@@ -52,10 +52,10 @@ export default defineComponent({
   width: 16px;
   margin: 0 auto;
   transform: scaleX(2);
-  animation: rotateArrow 3s $bezier-fast-ease-in-out infinite;
+  animation: rotateArrow 3s $ease-in-out infinite;
   perspective: 500;
   .svg_wrapper {
-    animation: rotateArrowWidth 3s ease-in-out infinite;
+    animation: rotateArrowWidth 3s $ease-in-out infinite;
     .arrow_svg {
       fill: $theme-mint;
     }

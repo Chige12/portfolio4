@@ -10,8 +10,8 @@
     header.header
       .header-bottom
         .container
-          h1.header-title.font-kerning {{state.post.fields.title}}
-          p.header-description.font-kerning {{state.post.fields.description}}
+          h1.header-title {{state.post.fields.title}}
+          p.header-description {{state.post.fields.description}}
           p.header-date(v-if="formatDateSinceUntil") Date: {{formatDateSinceUntil}}
     main.main
       .container
@@ -27,7 +27,6 @@ import {
   onBeforeUnmount,
   useAsync,
   useRoute,
-  watch,
 } from '@nuxtjs/composition-api'
 
 import client from '~/plugins/contentful.js'
@@ -51,17 +50,12 @@ export default defineComponent({
     const route = useRoute()
     const slug = computed(() => route.value.params.slug)
     // 記事を取得
-    const entries = useAsync(() =>
-      client.getEntries({
+    useAsync(async () => {
+      const entries = await client.getEntries({
         content_type: 'works',
         'fields.slug': slug.value,
       })
-    )
-    // 記事一覧をstateに反映
-    watch(entries, (newPosts: any) => {
-      if (newPosts) {
-        state.post = newPosts.items[0]
-      }
+      state.post = entries.items[0]
     })
 
     const state = reactive<State>({
@@ -145,7 +139,7 @@ export default defineComponent({
   background-size: cover;
   z-index: -2;
   transform: scale(1);
-  transition: 0.3s ease-in-out;
+  transition: 0.3s $ease-in-out;
   &::before {
     content: '';
     position: absolute;
@@ -155,7 +149,7 @@ export default defineComponent({
     height: 100%;
     z-index: 0;
     transform: scale(1);
-    transition: 0.3s ease-in-out;
+    transition: 0.3s $ease-in-out;
   }
   &--blur {
     transform: scale(1.01);
@@ -195,7 +189,11 @@ export default defineComponent({
   color: white;
   padding: 32px 0 40px;
 }
+.header-title {
+  @include font-kerning;
+}
 .header-description {
+  @include font-kerning;
   margin-top: 8px;
 }
 .header-date {

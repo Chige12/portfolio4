@@ -47,6 +47,7 @@ export default defineComponent({
 
     // スクロール量とwindowサイズを取得
     onMounted(() => {
+      scrollEvent()
       handleResize()
       window.addEventListener('scroll', scrollEvent)
       window.addEventListener('resize', handleResize)

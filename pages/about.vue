@@ -90,7 +90,7 @@ export default defineComponent({
   }
 }
 .about-top-animation {
-  animation: aboutTopAnm 0.8s $bezier-fast-ease-out forwards;
+  animation: aboutTopAnm 0.8s $ease-out forwards;
 }
 @keyframes aboutTopAnm {
   0% {

@@ -127,7 +127,7 @@ $gallery-columns-num: 5;
   width: 100%;
   background-position: center;
   background-size: cover;
-  transition: 0.2s ease-out;
+  transition: 0.3s $ease-out;
   &:focus {
     transform: scale(1.05);
   }
@@ -213,7 +213,7 @@ $gallery-columns-num: 5;
   padding: 8px 16px;
   font-size: 20px;
   font-weight: bold;
-  transition: 0.2s ease-out;
+  transition: 0.3s $ease-out;
   border-radius: 8px;
   &:hover {
     color: saturate($theme-mint, 30%);
@@ -224,7 +224,7 @@ $gallery-columns-num: 5;
 .hooper-pagination .hooper-indicator {
   width: 32px;
   height: 6px;
-  transition: 0.2s ease-out;
+  transition: 0.3s $ease-out;
   &:hover {
     background: saturate($theme-mint, 30%);
   }
@@ -238,14 +238,14 @@ $gallery-columns-num: 5;
     width: 48px;
     height: 48px;
     fill: $white;
-    transition: 0.2s ease-out;
+    transition: 0.3s $ease-out;
   }
   .hooper-prev,
   .hooper-next {
     margin: 0 16px;
     padding: 12px;
     border-radius: 50%;
-    transition: 0.2s ease-out;
+    transition: 0.3s $ease-out;
     &:hover {
       background: rgba($white, 0.8);
       .icon {

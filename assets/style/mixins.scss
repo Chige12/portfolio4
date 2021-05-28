@@ -12,6 +12,10 @@
   color: $color;
   word-spacing: 1px;
 }
+@mixin font-kerning() {
+  font-feature-settings: "palt" 1;
+  font-kerning: normal;
+}
 
 @mixin absolute(
   $top: null,
@@ -92,7 +96,7 @@
     $color
   );
   background-size: 7px 7px;
-  transition: $time $bezier-fast-ease-out;
+  transition: $time $ease-out;
 }
 
 @mixin fan-clipping($size: 38px, $p_size: 50px, $color: $theme-green) {
@@ -124,7 +128,7 @@
       margin: auto;
       border-radius: 100%;
       background: linear-gradient(90deg, $color 50%, transparent 50%);
-      animation: fan-clip-left-end 0.4s $bezier-fast-ease-out 0s forwards;
+      animation: fan-clip-left-end 0.4s $ease-out 0s forwards;
     }
   }
   .circle-right {
@@ -150,15 +154,15 @@
       margin: auto;
       border-radius: 100%;
       background: linear-gradient(-90deg, $color 50%, transparent 50%);
-      animation: fan-clip-right-end 0.4s $bezier-fast-ease-in 0s forwards;
+      animation: fan-clip-right-end 0.4s $ease-in 0s forwards;
     }
   }
   &:hover {
     .circle-left .inner {
-      animation: fan-clip-left-start 0.4s $bezier-fast-ease-out 0s forwards;
+      animation: fan-clip-left-start 0.4s $ease-out 0s forwards;
     }
     .circle-right .inner {
-      animation: fan-clip-right-start 0.4s $bezier-fast-ease-in 0s forwards;
+      animation: fan-clip-right-start 0.4s $ease-in 0s forwards;
     }
   }
   @keyframes fan-clip-left-start {
