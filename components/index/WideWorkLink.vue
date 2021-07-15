@@ -1,55 +1,62 @@
 <template lang="pug">
-  ul.wide-work-links#wide-work-links
-    li.wide-work-link(
-      v-for="(post,postKey) in props.posts"
-      :key="`wide-work-${postKey}`"
-      )
-      article.background-image(
-        :style="`background-image: url(${post.fields.backgroundImage.fields.file.url});`"
-        :class="{'--vivid': vividWorkKey === postKey+1}"
-        )
-        .container.work-link-container
-          .work-item-columns
-            .work-item-column.work-item-column--left
-              img.overwrapImage(
-                v-if="post.fields.isOverwrapImageShowed"
-                :src="post.fields.overwrapImage.fields.file.url"
-                :alt="post.fields.overwrapImage.fields.description || post.fields.backgroundImage.fields.title")
-            .work-item-column.work-item-column--right
-              h3.title
-                span.text-underline {{post.fields.title}}
-              .catchphrase
-                span.text-underline(
-                  v-for="(catchPhrage, catchPhrageKey) in lineReturnTextArray(post.fields.catchphrase)"
-                  :key="catchPhrage"
-                  ) {{catchPhrage}}
-              nuxt-link.link-button(:to="`/works/${post.fields.slug}`")
-                .link-button-text VIEW MORE
-      
+  article.background-image(
+    :style="`background-image: url(${props.post.fields.backgroundImage.fields.file.url});`"
+    :class="{'--vivid': isWorkArticleVivid}"
+    :id="`wide-work-${props.postKey + 1}`"
+    )
+    .container.work-link-container
+      .work-item-columns(:class="{'--reverse': props.postKey % 2}")
+        .work-item-column.work-item-column--left
+          img.overwrapImage(
+            v-if="props.post.fields.isOverwrapImageShowed"
+            :src="props.post.fields.overwrapImage.fields.file.url"
+            :alt="props.post.fields.overwrapImage.fields.description || props.post.fields.backgroundImage.fields.title")
+        .work-item-column.work-item-column--right
+          h3.title
+            span.text-underline {{props.post.fields.title}}
+          .catchphrase
+            span.text-underline(
+              v-for="(catchPhrage, catchPhrageKey) in lineReturnTextArray(props.post.fields.catchphrase)"
+              :key="catchPhrage"
+              ) {{catchPhrage}}
+          nuxt-link.link-button(:to="`/works/${props.post.fields.slug}`")
+            .link-button-text VIEW MORE
 </template>
 <script lang="ts">
 import {
   defineComponent,
+  onMounted,
   reactive,
   computed,
-  onMounted,
   watch,
 } from '@nuxtjs/composition-api'
-// import { cutMinMax } from '@/composables/scrollFunctions'
 
 type State = {
-  topYpx: number
-  listHeight: number
   getPosition: number
   getViewHeight: number
+  topYpx: number
+  clientHeight: number
   isFirstReloading: boolean
+  vividStartYpx: number
+  vividEndYpx: number
+}
+
+type Props = {
+  postKey: number
+  post: any
+  position: number
+  viewHeight: number
 }
 
 export default defineComponent({
   props: {
-    posts: {
-      type: Array,
-      default: () => [],
+    postKey: {
+      type: Number,
+      default: 0,
+    },
+    post: {
+      type: Object,
+      default: () => {},
     },
     position: {
       type: Number,
@@ -60,13 +67,15 @@ export default defineComponent({
       default: 0,
     },
   },
-  setup(props) {
+  setup(props: Props) {
     const state = reactive<State>({
-      topYpx: 0,
-      listHeight: 0,
       getPosition: props.position,
       getViewHeight: props.viewHeight,
+      topYpx: 0,
+      clientHeight: 0,
       isFirstReloading: true,
+      vividStartYpx: 0,
+      vividEndYpx: 0,
     })
 
     watch(
@@ -74,7 +83,7 @@ export default defineComponent({
       (newValue: number) => {
         state.getPosition = newValue
         if (state.isFirstReloading) {
-          setPosiAndHeight()
+          setTopYpxReload()
         }
       }
     )
@@ -82,38 +91,34 @@ export default defineComponent({
       () => props.viewHeight,
       (newValue: number) => {
         state.getViewHeight = newValue
-        setPosiAndHeight()
       }
     )
 
     onMounted(() => {
-      setPosiAndHeight()
+      setTopYpxReload()
     })
 
-    const setPosiAndHeight = () => {
-      // 親要素の絶対値Y座標topと子要素のHeightを取得
+    const setTopYpxReload = () => {
       const elem: HTMLElement | null = document.getElementById(
-        'wide-work-links'
+        `wide-work-${props.postKey + 1}`
       )
       if (elem) {
+        // 要素の絶対値Y座標と要素の高さを設定
         state.topYpx = elem.offsetTop
-        const firstChild: Element | null = elem.children[0]
-        if (firstChild) {
-          state.listHeight = firstChild.clientHeight
-          state.isFirstReloading = false
-        }
+        state.clientHeight = elem.clientHeight
+        state.isFirstReloading = false
       }
     }
 
-    const vividWorkKey = computed(() => {
-      const getViewHeightCenter = state.getViewHeight / 2
-      const centerPosition =
-        state.getPosition -
-        state.topYpx +
-        getViewHeightCenter +
-        state.listHeight
-      return (centerPosition / state.listHeight) | 0
+    const isWorkArticleVivid = computed(() => {
+      const vividStartYpx = state.topYpx - state.getViewHeight / 2
+      const vividEndYpx =
+        state.topYpx - state.getViewHeight / 2 + state.clientHeight
+      const isWorkArticleVivid =
+        vividStartYpx <= state.getPosition && state.getPosition <= vividEndYpx
+      return isWorkArticleVivid
     })
+
     const lineReturnTextArray = (text: string): Array<string> => {
       return text.split(/\n/g)
     }
@@ -121,22 +126,13 @@ export default defineComponent({
     return {
       state,
       props,
-      vividWorkKey,
+      isWorkArticleVivid,
       lineReturnTextArray,
     }
   },
 })
 </script>
-
 <style lang="scss" scoped>
-ul.wide-work-links {
-  list-style: none;
-}
-.wide-work-link {
-  width: 100%;
-  height: 640px;
-  margin: 0 0;
-}
 .background-image {
   width: 100%;
   height: 100%;
@@ -171,6 +167,18 @@ ul.wide-work-links {
   a:link,
   a:visited {
     text-decoration: none;
+  }
+}
+.work-item-columns.--reverse {
+  flex-direction: row-reverse;
+  text-align: right;
+  .work-item-column {
+    &--right {
+      padding-right: 24px;
+    }
+    &--left {
+      padding-left: 24px;
+    }
   }
 }
 .overwrapImage {

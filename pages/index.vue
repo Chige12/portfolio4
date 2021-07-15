@@ -9,7 +9,7 @@
     section#About.about-wrapper
       AboutTop
     section#Works.wide-work-links
-      WideWorkLinks(
+      WideWorkLinkList(
         :posts="state.posts"
         :position="state.position"
         :viewHeight="state.viewHeight"
@@ -29,7 +29,7 @@ import client from '~/plugins/contentful.js'
 import IndexTopVisual from '~/components/index/IndexTopVisual.vue'
 import ClickMe from '~/components/atoms/ClickMe.vue'
 import AboutTop from '~/components/about/AboutTop.vue'
-import WideWorkLinks from '~/components/index/WideWorkLinks.vue'
+import WideWorkLinkList from '~/components/index/WideWorkLinkList.vue'
 
 type Entries = {
   items: Array<{
@@ -51,7 +51,7 @@ export default defineComponent({
     IndexTopVisual,
     ClickMe,
     AboutTop,
-    WideWorkLinks,
+    WideWorkLinkList,
   },
   setup() {
     // 記事一覧を取得

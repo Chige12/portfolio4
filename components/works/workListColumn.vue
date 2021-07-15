@@ -84,7 +84,7 @@ export default defineComponent({
       (newValue: number) => {
         state.getPosition = newValue
         if (state.isFirstReloading) {
-          absYpxReload()
+          setYpxReload()
         }
       }
     )
@@ -129,11 +129,11 @@ export default defineComponent({
     })
 
     onMounted(() => {
-      absYpxReload()
+      setYpxReload()
     })
 
-    const absYpxReload = () => {
-      // absYpx 要素の絶対値Y座標を設定
+    const setYpxReload = () => {
+      // setYpx 要素の絶対値Y座標を設定
       const elem: HTMLElement | null = document.getElementById(
         `work-row-${props.postsRow + 1}`
       )

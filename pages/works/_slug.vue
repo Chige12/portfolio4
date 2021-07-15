@@ -16,7 +16,7 @@
     main.main
       .container
         GalleryList(v-if="state.post.fields.gallery" :gallery="state.post.fields.gallery")
-        MarkdownArticle(:article="state.post.fields.article")
+        MarkdownArticle(:article="state.post.fields.articleText")
 </template>
 <script lang="ts">
 import {
