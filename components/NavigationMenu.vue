@@ -128,7 +128,7 @@ a:visited {
   text-decoration: none;
 }
 
-@mixin circle-dot($size: 17px, $color: $theme-gray) {
+@mixin circle-dot($size: 17px, $color: $theme-gray-light-1) {
   width: $size;
   height: $size;
   border-radius: 50%;
@@ -214,7 +214,7 @@ a:visited {
   z-index: 21;
   .link-over-text--gray {
     transition: 0.8s $ease-out;
-    color: $theme-gray-dark-1;
+    color: $theme-gray-light-1;
     z-index: 22;
   }
 }
