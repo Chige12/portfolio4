@@ -122,7 +122,7 @@ export default defineComponent({
   },
 })
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .about-top {
   margin: 0 48px;
   @include flex();

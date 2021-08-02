@@ -3,17 +3,18 @@ $black:      #333;
 $light-gray: #eee;
 $white:      #fff;
 
-// https://contrast-grid.eightshapes.com/?background-colors=&foreground-colors=%23FFFFFF%2C%20White%0D%0A%23e7e8e2%2C%20theme-gray-light-3%0D%0A%23c9cac2%2C%20theme-gray-light-2%0D%0A%23a6a79e%2C%20theme-gray-light-1%0D%0A%2375766d%2C%20theme-gray-dark-1%0D%0A%23575951%2C%20theme-gray-dark-2%0D%0A%0D%0A%23a0b168%2C%20theme-green-l1%0D%0A%23869849%2C%20theme-green%0D%0A%23637622%2C%20theme-green-d1%0D%0A%2378b5a9%2C%20theme-mint-l1%0D%0A%2348a290%2C%20theme-mint%0D%0A%232D7A71%2C%20theme-mint-d1%0D%0A%23312f39%2C%20theme-navy%0D%0A%23c42a66%2C%20theme-pink&es-color-form__tile-size=compact
+// https://contrast-grid.eightshapes.com/?background-colors=&foreground-colors=%23FFFFFF%2C%20White%0D%0A%23e7e8e2%2C%20theme-gray-light-3%0D%0A%23c9cac2%2C%20theme-gray-light-2%0D%0A%23a6a79e%2C%20theme-gray-light-1%0D%0A%2375766d%2C%20theme-gray-dark-1%0D%0A%23575951%2C%20theme-gray-dark-2%0D%0A%0D%0A%23a0b168%2C%20theme-green-l1%0D%0A%23869849%2C%20theme-green%0D%0A%23637622%2C%20theme-green-d1%0D%0A%2378b5a9%2C%20theme-mint-l1%0D%0A%2348a290%2C%20theme-mint%0D%0A%23338277%2C%20theme-mint-d1%0D%0A%232D7A71%2C%20theme-mint-d2%0D%0A%23312f39%2C%20theme-navy%0D%0A%23c42a66%2C%20theme-pink&es-color-form__tile-size=compact
 
 $theme-green-l1:  #a0b168; // on navy  AA   (5.6)
 $theme-green:    #859749; // on white AA18 (3.1)
 $theme-green-d1: #637622; // on white AA   (5)
 $theme-mint-l1:  #78b5a9; // on navy  AA   (5.6)
 $theme-mint:     #49a290; // on white AA18 (3)
-$theme-mint-d1:  #2D7A71; // on white AA   (5)
+$theme-mint-d1:  #338277; // on white AA   (4.5)
 $theme-navy:     #312f39; // on white AAA  (13.1)
 $theme-pink:     #c42a66; // on white AA   (5.4)
 
+$theme-gray-light-4: #F3F3F2;
 $theme-gray-light-3: #e7e8e2; // on navy  AAA (10)
 $theme-gray-light-2: #c9cac2; // on navy  AAA (7.9)
 $theme-gray-light-1: #a6a79e; // on navy  AA  (5.4)

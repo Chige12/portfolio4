@@ -10,7 +10,6 @@
   font-weight: $weight;
   font-size: $size;
   color: $color;
-  word-spacing: 1px;
 }
 @mixin font-kerning() {
   font-feature-settings: "palt" 1;

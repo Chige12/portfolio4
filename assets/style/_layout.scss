@@ -31,10 +31,15 @@ body,
 a,
 a:link,
 a:visited {
-  color: $theme-green;
+  color: $theme-mint-d1;
   outline: none;
   text-decoration-thickness: 1px;
   text-underline-offset: 0.125em;
+}
+
+img {
+  display: block;
+  width: 100%;
 }
 
 button {
